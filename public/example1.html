@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <h1>Socket.io</h1>
+
+    <canvas id="voteChart"></canvas>
+
+    <form id="form">
+      <input
+        type="text"
+        id="message"
+        placeholder="Ingrese su mensaje"
+      />
+      <button type="submit">Enviar</button>
+    </form>
+
+    <ul id="chats"></ul>
+
+    <script>
+      const form = document.getElementById("form");
+      const message = document.getElementById("message");
+      const chats = document.getElementById("chats");
+      const socket = io();
+
+      socket.on("message", (data) => {
+        console.log(data);
+        const li = document.createElement("li");
+        li.textContent = data;
+        chats.appendChild(li);
+      });
+
+      //socket.emit("message", "olá mundo do cliente");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        socket.emit("message", message.value);
+        message.value = "";
+      });
+    </script>
+  </body>
+</html>
