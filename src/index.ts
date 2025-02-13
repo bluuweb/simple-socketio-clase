@@ -1,3 +1,4 @@
+import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import http from "node:http";
@@ -5,7 +6,14 @@ import { Server } from "socket.io";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "*", // permitir todas las conexiones
+  },
+});
+
+app.use(cors()); // habilitar CORS para todas las rutas
+// staic files
 
 app.use(express.static("public"));
 
